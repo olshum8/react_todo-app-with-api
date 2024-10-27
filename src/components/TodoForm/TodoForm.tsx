@@ -7,23 +7,21 @@ interface Props {
   todos: Todo[];
   filteredTodos: Todo[];
   onAddTodo: (todo: Todo) => Promise<void>;
-  errorMessage: (error: string) => void;
+  onErrorMessage: (error: string) => void;
   onTempTodo: (todo: Todo | null) => void;
   onBulkUpdate: (todoArr: Todo[], status: boolean) => void;
   focusInput: () => void;
   inputRef: React.RefObject<HTMLInputElement>;
-  isErrorHidden: (boolean: boolean) => void;
 }
 
 export const TodoForm: React.FC<Props> = ({
   todos,
   filteredTodos,
   onAddTodo,
-  errorMessage,
+  onErrorMessage,
   onTempTodo,
   focusInput,
   inputRef,
-  isErrorHidden,
   onBulkUpdate,
 }) => {
   const [todo, setTodo] = useState('');
@@ -40,7 +38,6 @@ export const TodoForm: React.FC<Props> = ({
   };
 
   const handleInput = (evnt: React.ChangeEvent<HTMLInputElement>) => {
-    isErrorHidden(true);
     setTodo(evnt.target.value);
     setDisableInput(false);
 
@@ -56,8 +53,7 @@ export const TodoForm: React.FC<Props> = ({
     setDisableInput(true);
 
     if (!todo.trim()) {
-      isErrorHidden(false);
-      errorMessage('Title should not be empty');
+      onErrorMessage('Title should not be empty');
       setDisableInput(false);
 
       return;
@@ -81,8 +77,7 @@ export const TodoForm: React.FC<Props> = ({
     } catch (error) {
       setDisableInput(false);
       onTempTodo(null);
-      isErrorHidden(false);
-      errorMessage('Unable to add a todo');
+      onErrorMessage('Unable to add a todo');
     }
   };
 

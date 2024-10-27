@@ -19,7 +19,6 @@ export const App: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [tempTodo, setTempTodo] = useState<Todo | null>();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [isErrorHiden, setIsErrorHiden] = useState(true);
 
   const focusInput = () => {
     if (inputRef.current) {
@@ -32,9 +31,7 @@ export const App: React.FC = () => {
       await postService
         .addTodos(todo)
         .then(newTodo => setTodos([...todos, newTodo]));
-      setIsErrorHiden(true);
     } catch (error) {
-      setIsErrorHiden(false);
       setErrorMessage('Unable to add a todo');
       throw error;
     }
@@ -188,8 +185,7 @@ export const App: React.FC = () => {
             filteredTodos={filteredTodos}
             onAddTodo={addTodo}
             onTempTodo={setTempTodo}
-            errorMessage={setErrorMessage}
-            isErrorHidden={setIsErrorHiden}
+            onErrorMessage={setErrorMessage}
             onBulkUpdate={bulkCheckTodo}
           />
         </header>
@@ -216,9 +212,7 @@ export const App: React.FC = () => {
 
       <ErrorMessage
         errorMessage={errorMessage}
-        isHidden={isErrorHiden}
-        setIsHidden={setIsErrorHiden}
-        setErrorMessage={setErrorMessage}
+        onErrorMessage={setErrorMessage}
       />
     </div>
   );
