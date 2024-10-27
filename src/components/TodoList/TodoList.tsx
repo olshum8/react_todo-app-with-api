@@ -104,7 +104,9 @@ export const TodoList: React.FC<Props> = ({
           {editingTodoId === todo.id ? (
             <input
               ref={inputRef}
+              type="text"
               data-cy="TodoTitleField"
+              className="todo__title-field"
               value={newTodoTitle}
               onChange={e => setNewTodoTitle(e.target.value)}
               autoFocus
