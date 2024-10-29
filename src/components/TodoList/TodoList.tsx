@@ -3,6 +3,7 @@
 import classNames from 'classnames';
 import { Todo } from '../../types/Todo';
 import { useRef, useState } from 'react';
+import { TodoItem } from '../TodoItem';
 
 interface Props {
   tempTodo?: Todo;
@@ -26,7 +27,7 @@ export const TodoList: React.FC<Props> = ({
   const [newTodoTitle, setNewTodoTitle] = useState('');
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const handleEditing = (id: number, title: string) => {
+  const handleEditing = ({ id, title }: Todo) => {
     setEditingTodoId(id);
     setNewTodoTitle(title);
     setCurrentTodoTitle(title);
@@ -110,7 +111,7 @@ export const TodoList: React.FC<Props> = ({
               value={newTodoTitle}
               onChange={e => setNewTodoTitle(e.target.value)}
               autoFocus
-              onBlur={() => handleSave()}
+              onBlur={handleSave}
               onKeyDown={handleKeyDown}
             ></input>
           ) : (
@@ -118,7 +119,7 @@ export const TodoList: React.FC<Props> = ({
               <span
                 data-cy="TodoTitle"
                 className="todo__title"
-                onDoubleClick={() => handleEditing(todo.id, todo.title)}
+                onDoubleClick={() => handleEditing(todo)}
               >
                 {todo.title}
               </span>
@@ -127,7 +128,7 @@ export const TodoList: React.FC<Props> = ({
                 type="button"
                 className="todo__remove"
                 data-cy="TodoDelete"
-                onClick={() => onDelete(todo.id)}
+                onClick={() => onDelete(todo.id)} // here i cannot use destructuring because of onDelete and edditingTodoId
               >
                 ×
               </button>
@@ -146,39 +147,7 @@ export const TodoList: React.FC<Props> = ({
         </div>
       ))}
 
-      {tempTodo && (
-        <div
-          key={tempTodo.id}
-          data-cy="Todo"
-          className={classNames('todo', { completed: tempTodo.completed })}
-        >
-          <label className="todo__status-label">
-            <input
-              data-cy="TodoStatus"
-              type="checkbox"
-              className="todo__status"
-              defaultChecked={tempTodo.completed}
-            />
-          </label>
-          <span data-cy="TodoTitle" className="todo__title">
-            {tempTodo.title}
-          </span>
-          <button
-            disabled={true}
-            type="button"
-            className="todo__remove"
-            data-cy="TodoDelete"
-          >
-            ×
-          </button>
-          {tempTodo && (
-            <div data-cy="TodoLoader" className="modal overlay is-active">
-              <div className="modal-background has-background-white-ter" />
-              <div className="loader" />
-            </div>
-          )}
-        </div>
-      )}
+      {tempTodo && <TodoItem tempTodo={tempTodo} />}
     </>
   );
 };

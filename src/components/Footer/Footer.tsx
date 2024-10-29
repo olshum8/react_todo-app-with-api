@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { useState } from 'react';
 import { Todo } from '../../types/Todo';
+import { FILTER } from '../../App';
 
 interface Props {
   todos: Todo[];
@@ -10,7 +11,7 @@ interface Props {
 }
 
 export const Footer: React.FC<Props> = ({ onFilter, onDelete, todos }) => {
-  const [activeLink, setActiveLink] = useState('all');
+  const [activeLink, setActiveLink] = useState(FILTER.All);
 
   const handleFiltering = (filterType: string) => {
     onFilter(filterType);
@@ -30,10 +31,10 @@ export const Footer: React.FC<Props> = ({ onFilter, onDelete, todos }) => {
       <nav className="filter" data-cy="Filter">
         <a
           href="#/"
-          onClick={() => handleFiltering('all')}
+          onClick={() => handleFiltering(FILTER.All)}
           className={classNames(
             'filter__link',
-            activeLink === 'all' && 'selected',
+            activeLink === FILTER.All && 'selected',
           )}
           data-cy="FilterLinkAll"
         >
@@ -42,10 +43,10 @@ export const Footer: React.FC<Props> = ({ onFilter, onDelete, todos }) => {
 
         <a
           href="#/active"
-          onClick={() => handleFiltering('active')}
+          onClick={() => handleFiltering(FILTER.ACTIVE)}
           className={classNames(
             'filter__link',
-            activeLink === 'active' && 'selected',
+            activeLink === FILTER.ACTIVE && 'selected',
           )}
           data-cy="FilterLinkActive"
         >
@@ -54,10 +55,10 @@ export const Footer: React.FC<Props> = ({ onFilter, onDelete, todos }) => {
 
         <a
           href="#/completed"
-          onClick={() => handleFiltering('completed')}
+          onClick={() => handleFiltering(FILTER.COMPLETED)}
           className={classNames(
             'filter__link',
-            activeLink === 'completed' && 'selected',
+            activeLink === FILTER.COMPLETED && 'selected',
           )}
           data-cy="FilterLinkCompleted"
         >

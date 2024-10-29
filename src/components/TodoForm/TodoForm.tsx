@@ -89,7 +89,7 @@ export const TodoForm: React.FC<Props> = ({
 
   return (
     <>
-      {todos.length > 0 && (
+      {!!todos.length && (
         <button
           type="button"
           className={classNames(
@@ -97,7 +97,7 @@ export const TodoForm: React.FC<Props> = ({
             completedTodos.length === todos.length && 'active',
           )}
           data-cy="ToggleAllButton"
-          onClick={() => handleBulkCheck()}
+          onClick={handleBulkCheck}
         />
       )}
 

@@ -7,7 +7,8 @@ import { Todo } from './types/Todo';
 import { ErrorMessage } from './components/ErrorMessage/ErrorMessage';
 import { TodoForm } from './components/TodoForm/TodoForm';
 
-const FILTER = {
+export const FILTER = {
+  All: 'all',
   ACTIVE: 'active',
   COMPLETED: 'completed',
 };
@@ -160,9 +161,7 @@ export const App: React.FC = () => {
   useEffect(() => {
     postService
       .getTodos()
-      .then(todosFromServer => {
-        setTodos(todosFromServer);
-      })
+      .then(setTodos)
       .catch(() => setErrorMessage('Unable to load todos'));
   }, []);
 
